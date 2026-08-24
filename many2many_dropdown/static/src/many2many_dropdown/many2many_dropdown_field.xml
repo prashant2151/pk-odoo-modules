@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="many2many_dropdown.Many2ManyDropdownField">
+        <div
+            class="o_field_tags d-inline-flex flex-wrap gap-1 mw-100"
+            t-att-class="{'o_tags_input o_input': !props.readonly}"
+            t-ref="many2ManyTagsField"
+        >
+            <TagsList tags="tags"/>
+            <div t-if="showM2OSelectionField" class="o_field_many2many_selection d-inline-flex" t-ref="autoComplete">
+                <Many2XAutocomplete
+                    id="props.id"
+                    placeholder="tags.length ? '' : props.placeholder"
+                    resModel="relation"
+                    autoSelect="true"
+                    fieldString="string"
+                    activeActions="activeActions"
+                    update="update"
+                    quickCreate="activeActions.create ? quickCreate : null"
+                    context="props.context"
+                    getDomain.bind="getDomain"
+                    getSearchMoreDomain.bind="getSearchMoreDomain"
+                    isToMany="true"
+                    nameCreateField="props.nameCreateField"
+                    noSearchMore="props.noSearchMore"
+                    isSelected.bind="isSelected"
+                    onToggle.bind="onToggle"
+                />
+            </div>
+        </div>
+    </t>
+
+    <t t-name="many2many_dropdown.Many2XMultiSelectAutocomplete">
+        <div class="o_input_dropdown" t-ref="autocomplete_container">
+            <AutoComplete
+                value="props.value"
+                id="props.id"
+                placeholder="props.placeholder"
+                sources="sources"
+                autoSelect="props.autoSelect"
+                onSelect.bind="onSelect"
+                onInput.bind="onInput"
+                onChange.bind="onChange"
+                dropdown="props.dropdown"
+                autofocus="props.autofocus"
+                resetOnSelect="props.value === ''"
+                onCancel.bind="onCancel"
+                isSelected="props.isSelected"
+                onToggle="props.onToggle"
+            />
+            <span class="o_dropdown_button"/>
+        </div>
+    </t>
+
+    <t t-name="many2many_dropdown.MultiSelectAutoCompleteOption">
+        <t t-if="option.isRecord">
+            <span class="o_many2many_dropdown_option d-flex align-items-center"
+                  t-on-click.stop.prevent="() => props.onToggle(option.value, !props.isSelected(option.value))">
+                <input
+                    type="checkbox"
+                    class="form-check-input flex-shrink-0"
+                    t-att-checked="props.isSelected(option.value)"
+                    tabindex="-1"
+                />
+                <span class="text-truncate" t-esc="option.label"/>
+            </span>
+        </t>
+        <t t-else="">
+            <t t-esc="option.label"/>
+        </t>
+    </t>
+
+</templates>
